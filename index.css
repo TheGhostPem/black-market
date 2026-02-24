@@ -1,0 +1,92 @@
+body {
+    width: 100vw;
+    background-color:black;
+    
+}
+
+p {
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 23px;
+
+    text-align: center ;
+}
+h1{ 
+    text-align: center;
+    color: black;
+}
+
+.navbar {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: #FFAEC9;
+}
+
+.navbar .logo-mini {
+    max-width: 120px;
+}
+
+.logo {
+    max-width: 680px;
+    margin-top: 50px;
+}
+
+h2{
+    font-family: 'Courier New', Courier, monospace;
+    font-style: italic;
+    width: 90vw;
+    font-size: 15px;
+    text-align: right;
+    margin-top: 100px;
+    color: #FFAEC9;
+}
+
+.login-section {
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.login-section img {
+    max-width: 600px;
+}
+
+.login-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    gap: 20px;
+    min-width: 24rem;
+}
+
+.login-section input {
+    width: 100%;
+    padding: 6px 2px;
+    border-radius: 8px;
+    background: black;
+    color: white;
+    border-color: #FFAEC9;
+    
+}
+.login-section form {
+    
+    padding :20px  20px;
+    padding-top: 25px;
+}
+
+.login-section button {
+    min-width: 8rem;
+    padding: 4px 2px;
+    border-radius: 50px;
+    transition: all 0.5s ease-in-out;
+    font-weight: bold;
+}
+
+.login-section button:hover {
+    transform: translateY(-4px);
+    background-color: #FFAEC9 ;
+    color: white;
+}
+

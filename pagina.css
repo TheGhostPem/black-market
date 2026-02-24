@@ -1,0 +1,96 @@
+body {
+    background-color: black;
+    width: 100vw;
+    margin: 0;
+}
+
+.navbar {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFAEC9;
+}
+
+.navbar .banner {
+    display: flex;
+}
+
+.navbar .logo-mini {
+    max-width: 120px;
+    padding: 0%;
+}
+
+.navbar .logo {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    align-items: center;
+}
+
+.navbar .logo h1 {
+    margin-bottom: -12px;
+}
+
+.navbar .botones {
+    margin-right: 5rem;
+}
+
+.navbar .botones .crear{
+    background-color: white;
+    border-radius: 30px;
+    min-width: 8rem;
+    padding: 4px 2px;
+    transition: all 0.5s ease-in-out;
+    font-weight: bold;
+}
+
+.navbar .botones .inicio{
+    background-color: white;
+    border-radius: 30px;
+    min-width: 8rem;
+    padding: 4px 2px;
+    transition: all 0.5s ease-in-out;
+    font-weight: bold;
+}
+    
+.navbar .botones .crear:hover{
+    transform: translateY(-4px);
+    background-color: black ;
+    color: white;
+    
+
+}
+
+.navbar .botones .inicio:hover{
+    transform: translateY(-4px);
+    background-color: black ;
+    color: white;
+    
+}
+.bloque {
+    display: flex;
+    flex-direction: column;
+}
+
+.box {
+    width: 250px;
+    height: 100px;
+    background: #FFAEC9;
+    margin: 0px;
+}
+
+.page {
+    display: flex;
+    
+}
+
+.sidebar {
+    background-color: #FFAEC9;
+    left: 0px;
+    width: 16rem;
+    height: 100vh;
+}
+
+
+
