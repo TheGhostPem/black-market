@@ -68,6 +68,19 @@ body {
     color: white;
     
 }
+.navbar  input{
+     width: 400px;
+     height: 30px;
+    padding: 2px;
+    margin-top: 30px;
+    margin-left: 200px;
+    border-radius: 20px;
+    border: 2px solid black;
+    margin-bottom: 20px;
+    border-color: #880015;
+    background-color: black;
+    color: white;
+}
 .bloque {
     display: flex;
     flex-direction: column;
@@ -82,7 +95,7 @@ body {
 
 .page {
     display: flex;
-    
+
 }
 
 .sidebar {
@@ -91,6 +104,41 @@ body {
     width: 16rem;
     height: 100vh;
 }
+.sidebar {
+    flex-direction: column;
+    display: flex;
+    justify-content: space-around;
+    background-color: #FFAEC9;
+    color: white;
+    border-radius: 2px;
+}
+
+.sidebar button{
+    border-radius: 11px;
+    min-width: 10rem;
+    padding: 10px 6px;
+    transition: all 0.5s ease-in-out;
+    font-weight: bold;
+    border-color: #880015;
+}
+.sidebar button:hover{
+    transform: translateY(-4px);
+    background-color: black ;
+    color: white;
+
+}
+.venta .flores{
+    width: 700px;
+    height: 200px;
+    margin: 0px;
+}
+.venta{
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    margin: 0px;
+}
+
 
 
 
