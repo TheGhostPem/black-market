@@ -1,11 +1,12 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>BLACK MARKED</title>
-        <link rel="stylesheet" href="pagina.css">
-        <script src="script.js"></script>
-    </head>
+
+<head>
+    <meta charset="UTF-8">
+    <title>BLACK MARKED</title>
+    <link rel="stylesheet" href="pagina.css">
+</head>
+
 <body>
     <div class="navbar">
         <div class="banner">
@@ -14,33 +15,37 @@
                 <h1>BLACK MARKET</h1>
                 <p>--- technology at hand ---</p>
             </div>
-            <input type="text" id="buscador" placeholder="Buscar producto..." >
+            <input type="text" id="buscador" placeholder="Buscar producto...">
         </div>
-        <div class="botones" >
-            
-            <a href="/index.html"><button class="crear" >Crear cuenta</button></a>
-           <a href="/login.html"> <button class="inicio">Iniciar sesión</button></a>
+        <div class="botones">
+            <a href="/index.html"><button class="crear">Crear cuenta</button></a>
+            <a href="/login.html"> <button class="inicio">Iniciar sesión</button></a>
         </div>
     </div>
     <div class="page">
         <div class="sidebar">
-
-            <button>Teclados</button>
-            <button>Ratones</button>
-            <button>Pantallas</button>
-            <button>Auriculares</button>
-            <button>Portatiles</button>
-            <button>CPU</button>
-
+            <button onclick="filtrarPor('Todos')">Todos</button>
+            <button onclick="filtrarPor('Teclados')">Teclados</button>
+            <button onclick="filtrarPor('Ratones')">Ratones</button>
+            <button onclick="filtrarPor('Pantallas')">Pantallas</button>
+            <button onclick="filtrarPor('Auriculares')">Auriculares</button>
+            <button onclick="filtrarPor('Portatiles')">Portatiles</button>
+            <button onclick="filtrarPor('CPU')">CPU</button>
         </div>
         <div class="venta">
             <img class="flores" src="flores.png" alt="no carga">
             <p> Black Marked eleva tu experiencia tecnológica al siguiente nivel.
-                Encuentra computadores potentes, mouse gamer, teclados mecánicos y accesorios diseñados para máximo rendimiento.
+                Encuentra computadores potentes, mouse gamer, teclados mecánicos y accesorios diseñados para máximo
+                rendimiento.
                 Si eres estudiante, creador o gamer, aquí encontrarás el equipo perfecto para ti.</p>
+            
+            <!-- Contenedor dinámico de productos -->
+            <div id="catalogo-productos" class="catalogo-grid"></div>
 
         </div>
     </div>
-    
+
+    <script src="script.js"></script>
 </body>
+
 </html>

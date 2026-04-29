@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BLACK MARKED - AÑADIR PRODUCTO</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="navbar" style="position: relative; align-items: center;">
+        <img class="logo-mini" src="logo_mini.png" alt="no carga">
+        <h1>
+            BLACK MARKET
+        </h1>
+        <div style="position: absolute; right: 2rem;">
+            <a href="/pagina.html" style="text-decoration: none;">
+                <button style="background-color: white; color: black; border-radius: 30px; font-weight: bold; border: 2px solid black; cursor: pointer; padding: 8px 16px; transition: transform 0.3s ease;">
+                    Volver a la Tienda
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <p style="text-align: center; color: white;">
+        Añade nuevos productos a tu catálogo tecnológico 🛒✨
+    </p>
+
+    <div class="box" style="height: auto; padding-bottom: 2rem; margin-top: 2rem;">
+        <div class="login-section">
+            <img src="logo black market.png" alt="no carga"
+                style="width: 500px; height: 500px; object-fit: contain; margin-bottom: 1rem;">
+            <form id="agregar-producto-form" class="register-form">
+                <input type="text" placeholder="Nombre del producto..." name="nombre" required>
+                <input type="text" placeholder="Descripción breve..." name="descripcion" required>
+                <input type="number" step="0.01" placeholder="Precio (Ej: 99.99)..." name="precio" required>
+
+                <select name="categoria" required
+                    style="width: 100%; border-radius: 8px; background: black; color: white; border: 2px solid #FFAEC9; padding: 6px 2px; margin-bottom: 20px; font-size: 16px; outline: none;">
+                    <option value="" disabled selected>Selecciona una categoría...</option>
+                    <option value="Teclados">Teclados</option>
+                    <option value="Ratones">Ratones</option>
+                    <option value="Pantallas">Pantallas</option>
+                    <option value="Auriculares">Auriculares</option>
+                    <option value="Portatiles">Portátiles</option>
+                    <option value="CPU">CPU</option>
+                </select>
+
+                <input type="text" placeholder="URL de la imagen (opcional)..." name="imagen">
+
+                <button type="submit">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <h2>
+        theghost
+    </h2>
+    <script>
+        if (!localStorage.getItem('userSession') || localStorage.getItem('userSession') === "undefined") {
+            alert('Debes iniciar sesión para añadir un producto.');
+            window.location.href = "login.html";
+        }
+    </script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
