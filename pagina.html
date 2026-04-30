@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>BLACK MARKED</title>
+    <title>BLACK MARKET</title>
+    <link rel="icon" href="logo_mini.png" type="image/png">
     <link rel="stylesheet" href="pagina.css">
 </head>
 
@@ -17,9 +18,24 @@
             </div>
             <input type="text" id="buscador" placeholder="Buscar producto...">
         </div>
-        <div class="botones">
+        <div class="botones" id="auth-buttons">
             <a href="/index.html"><button class="crear">Crear cuenta</button></a>
             <a href="/login.html"> <button class="inicio">Iniciar sesión</button></a>
+        </div>
+        <!-- Perfil del usuario (se muestra si está logueado) -->
+        <div id="user-profile" style="display: none; align-items: center; gap: 20px; margin-right: 20px;">
+            <button class="btn-bonito" onclick="location.href='/agregar_producto.html'">✨ Añadir Producto</button>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img id="user-pic" src="logo_mini.png" alt="Avatar"
+                    style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid black; object-fit: cover;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="user-name"
+                        style="color: black; font-weight: bold; font-size: 15px; line-height: 1.2;"></span>
+                    <button onclick="localStorage.removeItem('userSession'); location.reload();"
+                        style="background: none; border: none; color: #880015; cursor: pointer; font-size: 11px; text-decoration: underline; padding: 0; text-align: left; font-weight: bold;">Cerrar
+                        sesión</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="page">
@@ -38,7 +54,7 @@
                 Encuentra computadores potentes, mouse gamer, teclados mecánicos y accesorios diseñados para máximo
                 rendimiento.
                 Si eres estudiante, creador o gamer, aquí encontrarás el equipo perfecto para ti.</p>
-            
+
             <!-- Contenedor dinámico de productos -->
             <div id="catalogo-productos" class="catalogo-grid"></div>
 

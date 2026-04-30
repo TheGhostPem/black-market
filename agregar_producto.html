@@ -3,19 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>BLACK MARKED - AÑADIR PRODUCTO</title>
+    <title>BLACK MARKET - AÑADIR PRODUCTO</title>
+    <link rel="icon" href="logo_mini.png" type="image/png">
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <div class="navbar" style="position: relative; align-items: center;">
-        <img class="logo-mini" src="logo_mini.png" alt="no carga">
-        <h1>
-            BLACK MARKET
-        </h1>
-        <div style="position: absolute; right: 2rem;">
+    <div class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
+        <div class="banner" style="display: flex; align-items: center; gap: 10px;">
+            <img class="logo-mini" src="logo_mini.png" alt="no carga" style="max-width: 120px;">
+            <div class="logo">
+                <h1 style="margin: 0; position: relative; top: -35px; font-size: 2.5rem;">BLACK MARKET</h1>
+            </div>
+        </div>
+        <div>
             <a href="/pagina.html" style="text-decoration: none;">
-                <button style="background-color: white; color: black; border-radius: 30px; font-weight: bold; border: 2px solid black; cursor: pointer; padding: 8px 16px; transition: transform 0.3s ease;">
+                <button style="background-color: white; color: black; border-radius: 30px; font-weight: bold; border: 2px solid black; cursor: pointer; padding: 8px 20px; transition: transform 0.3s ease;">
                     Volver a la Tienda
                 </button>
             </a>
@@ -28,8 +31,10 @@
 
     <div class="box" style="height: auto; padding-bottom: 2rem; margin-top: 2rem;">
         <div class="login-section">
-            <img src="logo black market.png" alt="no carga"
-                style="width: 500px; height: 500px; object-fit: contain; margin-bottom: 1rem;">
+            <img id="preview-img" src="logo black market.png" alt="no carga"
+                style="width: 500px; height: 500px; object-fit: contain; margin-bottom: 1rem; cursor: pointer; transition: transform 0.2s;"
+                title="Haz click para agregar una imagen o usa el campo de texto"
+                onclick="document.querySelector('input[name=\'imagen\']').focus()">
             <form id="agregar-producto-form" class="register-form">
                 <input type="text" placeholder="Nombre del producto..." name="nombre" required>
                 <input type="text" placeholder="Descripción breve..." name="descripcion" required>
@@ -60,6 +65,26 @@
         if (!localStorage.getItem('userSession') || localStorage.getItem('userSession') === "undefined") {
             alert('Debes iniciar sesión para añadir un producto.');
             window.location.href = "login.html";
+        }
+        
+        // Actualizar la vista previa de la imagen al escribir la URL
+        const imgInput = document.querySelector('input[name="imagen"]');
+        const previewImg = document.getElementById('preview-img');
+        if (imgInput && previewImg) {
+            imgInput.addEventListener('input', (e) => {
+                const url = e.target.value.trim();
+                previewImg.src = url ? url : 'logo black market.png';
+            });
+            previewImg.addEventListener('error', () => {
+                previewImg.src = 'logo black market.png';
+            });
+            previewImg.addEventListener('click', () => {
+                const nuevaUrl = prompt('Ingresa la URL de la imagen del producto:');
+                if (nuevaUrl !== null) {
+                    imgInput.value = nuevaUrl;
+                    previewImg.src = nuevaUrl || 'logo black market.png';
+                }
+            });
         }
     </script>
     <script src="./script.js"></script>

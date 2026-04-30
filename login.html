@@ -4,17 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>BLACK MARKED-LOGIN</title>
+    <link rel="icon" href="logo_mini.png" type="image/png">
     <link rel="stylesheet" href="index.css">
+    <!-- Librería de Google -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
     <div class="navbar">
-        <img class="logo-mini" src="logo_mini.png" alt="no carga">
-        <h1>
-            BLACK MARKET
-        </h1>
+        <div class="banner">
+            <img class="logo-mini" src="logo_mini.png" alt="no carga">
+            <div class="logo">
+                <h1>BLACK MARKET</h1>
+            </div>
+        </div>
+        <div class="botones">
+            <a href="pagina.html"><button class="inicio">🛒 Ver Tienda</button></a>
+        </div>
     </div>
-
 
     <p>
         Hola espero que tengas un buen dia,
@@ -22,27 +29,79 @@
     </p>
 
     <div class="box">
-
         <div class="login-section">
             <img src="logo black market.png" alt="no carga">
             <form id="login-form" class="login-form">
-                <!-- <input type="text" placeholder="Ingrese su nombre ..." name="" id="" required> -->
-                <input type="email" placeholder="Ingrese su correo..." name='correo' id="" required>
-                <input type="password" placeholder="Ingrese su contraseña..." name='contrasena' id="" required>
-                <!-- <input type="text" placeholder="telefono" id="required"> -->
-                <button type="submit">Login</button>
+                <input type="email" placeholder="Ingrese su correo..." name='correo' required>
+                <input type="password" placeholder="Ingrese su contraseña..." name='contrasena' required>
+                <button type="submit" style="margin-bottom: 15px;">Login</button>
+
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; gap: 12px; border-top: 1px solid #333; padding-top: 15px;">
+                    <p style="color: #888; font-size: 13px; margin: 0;">O accede rápidamente con:</p>
+
+                    <!-- Botón personalizado Rosa -->
+                    <div id="g_id_onload"
+                        data-client_id="200859997216-4597om843vj6s0skmouac7j25gndn0cu.apps.googleusercontent.com"
+                        data-callback="handleCredentialResponse" data-auto_prompt="false">
+                    </div>
+
+                    <button type="button"
+                        onclick="document.querySelector('div[role=button]') ? document.querySelector('div[role=button]').click() : google.accounts.id.prompt()"
+                        style="
+                            background: #FFAEC9; 
+                            color: black; 
+                            border: none; 
+                            border-radius: 30px; 
+                            padding: 10px 24px; 
+                            font-weight: bold; 
+                            cursor: pointer; 
+                            display: flex; 
+                            align-items: center; 
+                            gap: 10px;
+                            box-shadow: 0 0 15px rgba(255,174,201,0.4);
+                            transition: transform 0.2s;
+                        " onmouseover="this.style.transform='scale(1.05)'"
+                        onmouseout="this.style.transform='scale(1)'">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"
+                            height="20">
+                        Entrar con Google
+                    </button>
+
+                    <!-- El botón oficial se queda oculto pero funcional -->
+                    <div class="g_id_signin" data-type="standard" style="display:none;"></div>
+                </div>
             </form>
         </div>
     </div>
-    </div>
 
-
-
-
-    <h2>
-        theghost
-    </h2>
+    <h2>theghost</h2>
     <script src="./script.js"></script>
+
+    <script>
+        // Esta función recibe los datos de Google cuando el usuario se loguea
+        async function handleCredentialResponse(response) {
+            console.log("Token de Google recibido");
+            const API_URL = (window.location.protocol === 'file:') ? 'http://localhost:5000' : window.location.origin;
+            try {
+                const res = await fetch(`${API_URL}/api/google-login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: response.credential })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    localStorage.setItem('userSession', JSON.stringify(result.user));
+                    window.location.href = 'pagina.html';
+                } else {
+                    alert('Error en Google Login: ' + result.msg);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de conexión con el servidor');
+            }
+        }
+    </script>
 </body>
 
 </html>

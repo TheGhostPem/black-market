@@ -9,17 +9,20 @@ async function main() {
     });
 
     try {
-        await connection.query("ALTER TABLE products ADD COLUMN user_email VARCHAR(255)");
-        console.log("Added user_email column to products");
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS orders (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_email VARCHAR(128) NOT NULL,
+                product_id INT NOT NULL,
+                product_nombre VARCHAR(100),
+                product_precio DECIMAL(10,2),
+                fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('✅ Tabla orders creada correctamente');
     } catch (e) {
-        console.log("Error or column already exists: ", e.message);
+        console.error('Error:', e.message);
     }
-    
-    const [rows] = await connection.query("DESCRIBE products");
-    console.log("Products schema:", rows);
-
-    const [users] = await connection.query("DESCRIBE users");
-    console.log("Users schema:", users);
 
     await connection.end();
 }
