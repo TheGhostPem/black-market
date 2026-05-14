@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    <!-- ==========================================
+         BARRA DE NAVEGACIÓN (HEADER)
+         ========================================== -->
     <div class="navbar">
         <div class="banner">
             <img class="logo-mini" src="logo_mini.png" alt="no carga">
@@ -28,6 +31,9 @@
         Ingresa a tu cuenta antes de poder comprar😄🛒
     </p>
 
+    <!-- ==========================================
+         SECCIÓN PRINCIPAL: FORMULARIO DE LOGIN
+         ========================================== -->
     <div class="box">
         <div class="login-section">
             <img src="logo black market.png" alt="no carga">
@@ -40,6 +46,9 @@
                     style="display: flex; flex-direction: column; align-items: center; gap: 12px; border-top: 1px solid #333; padding-top: 15px;">
                     <p style="color: #888; font-size: 13px; margin: 0;">O accede rápidamente con:</p>
 
+                    <!-- ==========================================
+                         BOTÓN DE LOGIN CON GOOGLE (SSO)
+                         ========================================== -->
                     <!-- Botón personalizado Rosa -->
                     <div id="g_id_onload"
                         data-client_id="200859997216-4597om843vj6s0skmouac7j25gndn0cu.apps.googleusercontent.com"
@@ -76,10 +85,16 @@
     </div>
 
     <h2>theghost</h2>
+    <!-- ==========================================
+         SCRIPTS Y LÓGICA DE GOOGLE LOGIN
+         ========================================== -->
     <script src="./script.js"></script>
 
     <script>
-        // Esta función recibe los datos de Google cuando el usuario se loguea
+        /**
+         * handleCredentialResponse: Se ejecuta cuando Google devuelve el token del usuario.
+         * Lo enviamos a nuestro backend para que inicie la sesión o cree la cuenta.
+         */
         async function handleCredentialResponse(response) {
             console.log("Token de Google recibido");
             const API_URL = (window.location.protocol === 'file:') ? 'http://localhost:5000' : window.location.origin;

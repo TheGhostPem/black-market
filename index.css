@@ -1,7 +1,13 @@
+/* ==========================================
+   RESETEO BÁSICO
+   ========================================== */
 * {
     box-sizing: border-box; /* Esto hace que el padding no "empuje" hacia afuera */
 }
 
+/* ==========================================
+   ESTILOS GENERALES (TIPOGRAFÍA Y FONDOS)
+   ========================================== */
 body {
     width: 100%;
     margin: 0;
@@ -22,12 +28,15 @@ h1 {
     color: black;
 }
 
+/* ==========================================
+   BARRA DE NAVEGACIÓN (NAVBAR)
+   ========================================== */
 .navbar {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #FFAEC9;
+    background-color: #FFAEC9; /* Color Rosa Característico */
     padding: 5px 30px;
 }
 
@@ -79,6 +88,9 @@ h2 {
     color: #FFAEC9;
 }
 
+/* ==========================================
+   SECCIÓN DE FORMULARIOS (LOGIN Y REGISTRO)
+   ========================================== */
 .login-section {
     justify-self: center;
     display: flex;

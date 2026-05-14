@@ -1,10 +1,22 @@
-// Detectar automáticamente la URL del servidor
-const API_URL = (window.location.protocol === 'file:') ? 'http://localhost:5000' : window.location.origin;
+/**
+ * Detecta automáticamente si la aplicación se está ejecutando localmente (ej. Live Server)
+ * o si está en un entorno de producción, y ajusta la URL base para las peticiones al backend (API).
+ */
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+const API_URL = isLocalhost ? 'http://localhost:5000' : window.location.origin;
+
 
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 
-// --- Manejo de Sesión y Perfil ---
+// ==========================================
+// Módulo de Manejo de Sesión y Perfil de Usuario
+// ==========================================
+/**
+ * Se ejecuta apenas el HTML ha sido completamente cargado.
+ * Se encarga de leer la sesión guardada en localStorage y actualizar la interfaz visual 
+ * (ocultar botones de login y mostrar foto/nombre del usuario).
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const sessionStr = localStorage.getItem('userSession');
     const authButtons = document.getElementById('auth-buttons');
@@ -48,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- Inicio de Sesión (Login) ---
+/**
+ * Intercepta el envío del formulario de login, envía los datos al servidor, 
+ * y si es exitoso, guarda los datos del usuario en el localStorage.
+ */
 if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -77,6 +94,11 @@ if (loginForm) {
     });
 }
 
+// --- Registro de Usuario ---
+/**
+ * Intercepta el formulario de registro, envía los datos ingresados al backend para crear 
+ * una cuenta en la base de datos MySQL, y luego redirige al login si fue exitoso.
+ */
 if (registerForm) {
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -102,6 +124,11 @@ if (registerForm) {
     });
 }
 
+// --- Agregar Producto ---
+/**
+ * Intercepta el formulario de agregar producto (exclusivo para usuarios logueados o admins).
+ * Adjunta el email del usuario logueado como dueño del producto y lo envía al servidor.
+ */
 const agregarProductoForm = document.getElementById('agregar-producto-form');
 if (agregarProductoForm) {
     agregarProductoForm.addEventListener('submit', async (event) => {
@@ -144,6 +171,10 @@ if (agregarProductoForm) {
 // Lógica para cargar y mostrar productos dinámicamente en pagina.html
 const catalogoContainer = document.getElementById('catalogo-productos');
 if (catalogoContainer) {
+    /**
+     * Función asíncrona principal que hace una petición HTTP GET al servidor para obtener 
+     * todos los productos aprobados. Luego llama a 'renderizarProductos' para mostrarlos.
+     */
     async function cargarProductos() {
         try {
             const response = await fetch(`${API_URL}/api/products`);
@@ -159,6 +190,10 @@ if (catalogoContainer) {
         }
     }
 
+    /**
+     * Toma un arreglo (array) de productos y crea dinámicamente las tarjetas (cards) en el HTML.
+     * @param {Array} lista - Arreglo de objetos producto provenientes del backend o de un filtro.
+     */
     function renderizarProductos(lista) {
         catalogoContainer.innerHTML = ''; // Limpiar
 
@@ -220,7 +255,11 @@ if (catalogoContainer) {
         });
     }
 
-    // Función para editar producto
+    /**
+     * Permite al dueño o a un administrador editar la descripción y el precio de un producto.
+     * Emplea ventanas 'prompt' nativas de JS para recoger los nuevos valores.
+     * @param {number} id - El ID único del producto en la base de datos.
+     */
     window.editarProducto = async function (id) {
         const datosActuales = window.productosData[id];
 
@@ -259,7 +298,18 @@ if (catalogoContainer) {
 
     window._categoriaActiva = 'Todos';
 
-    // --- Algoritmo de distancia de Levenshtein (mide similitud entre palabras) ---
+    // ==========================================
+    // Módulo de Búsqueda y Filtros Inteligentes
+    // ==========================================
+
+    /**
+     * Algoritmo de Distancia de Levenshtein.
+     * Calcula cuántos cambios (inserciones, borrados, sustituciones) se necesitan
+     * para transformar la palabra 'a' en la palabra 'b'. Sirve para perdonar errores ortográficos.
+     * @param {string} a - Primera palabra
+     * @param {string} b - Segunda palabra
+     * @returns {number} - Distancia numérica (0 es idéntico)
+     */
     function levenshtein(a, b) {
         const m = a.length, n = b.length;
         const dp = Array.from({ length: m + 1 }, (_, i) =>
@@ -274,7 +324,11 @@ if (catalogoContainer) {
         return dp[m][n];
     }
 
-    // Devuelve true si `query` está "cerca" de `text` (busca en todas las palabras)
+    /**
+     * Compara un término de búsqueda (`query`) contra un texto largo.
+     * Utiliza la función levenshtein para devolver true si hay alguna palabra en el texto
+     * que sea muy similar a la búsqueda.
+     */
     function coincideDifuso(query, text) {
         if (!text) return false;
         const palabras = text.toLowerCase().split(/\s+/);
@@ -282,6 +336,12 @@ if (catalogoContainer) {
         return palabras.some(p => levenshtein(query, p) <= umbral);
     }
 
+    /**
+     * Aplica simultáneamente el filtro de categoría y el de búsqueda por texto.
+     * Si no encuentra una coincidencia exacta de texto, intenta hacer una búsqueda difusa.
+     * @param {string} query - Lo que el usuario escribió en la barra de búsqueda.
+     * @param {string} categoria - La categoría seleccionada en el menú lateral.
+     */
     function aplicarFiltros(query, categoria) {
         if (!window.todosLosProductos) return;
 
@@ -354,6 +414,10 @@ if (catalogoContainer) {
     }
 
 
+    /**
+     * Función global llamada por el menú lateral (sidebar).
+     * @param {string} categoria - Nombre de la categoría (ej. 'Auriculares', 'Todos').
+     */
     window.filtrarPor = function (categoria) {
         window._categoriaActiva = categoria;
         const query = (document.getElementById('buscador')?.value || '').toLowerCase().trim();
@@ -412,11 +476,18 @@ if (catalogoContainer) {
         }
     }
 
+    /**
+     * Cierra la sesión del usuario eliminando el objeto del localStorage y recarga la página.
+     */
     window.cerrarSesion = function () {
         localStorage.removeItem('userSession');
         window.location.reload();
     };
 
+    /**
+     * Permite al usuario cambiar su foto de perfil.
+     * Hace un PUT al servidor para guardarla en la base de datos y luego actualiza el localStorage.
+     */
     window.cambiarFotoPerfil = async function () {
         const nuevaFoto = prompt("Ingresa la URL de tu nueva foto de perfil:");
         if (!nuevaFoto) return;
@@ -455,6 +526,10 @@ if (catalogoContainer) {
         });
     }
 
+    /**
+     * Alterna la visualización de descripciones largas (Botón 'Ver más' / 'Ver menos').
+     * @param {number} id - ID del producto.
+     */
     window.toggleDesc = function (id) {
         const data = window.productosData[id];
         const textSpan = document.getElementById('text-' + id);
@@ -471,6 +546,10 @@ if (catalogoContainer) {
         }
     };
 
+    /**
+     * Permite al dueño o admin borrar permanentemente un producto.
+     * Muestra una confirmación antes de enviar el DELETE al servidor.
+     */
     window.borrarProducto = async function (id) {
         if (confirm('¿Estás seguro de que deseas eliminar este producto definitivamente de la tienda?')) {
             try {
@@ -501,7 +580,15 @@ if (catalogoContainer) {
     // Ejecutar al instante cuando la página cargue
     cargarProductos();
 
-    // ── Función de compra directa ───────────────────────────────────────────
+    // ==========================================
+    // Módulo de Pasarela de Pago (Simulada)
+    // ==========================================
+
+    /**
+     * Se dispara al hacer clic en "Comprar ahora".
+     * Verifica si hay sesión activa. Si la hay, muestra la pasarela de pago.
+     * Si no, muestra un modal pidiendo que inicie sesión.
+     */
     window.comprarProducto = function (id, nombre, precio) {
         // Verificar sesión
         const sessionStr = localStorage.getItem('userSession');
@@ -517,6 +604,10 @@ if (catalogoContainer) {
         mostrarModalCompra(user, nombre, precio, id);
     };
 
+    /**
+     * Inyecta HTML dinámicamente en el body para mostrar el pop-up (modal) de pago.
+     * Contiene validaciones en tiempo real para el número de tarjeta, CVV y expiración.
+     */
     function mostrarModalCompra(user, nombre, precio, id) {
         const prev = document.getElementById('modal-compra');
         if (prev) prev.remove();

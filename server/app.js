@@ -1,3 +1,14 @@
+/**
+ * ==========================================
+ * IMPORTACIÓN DE MÓDULOS
+ * ==========================================
+ * dotenv: Carga variables de entorno desde el archivo .env
+ * express: Framework para construir el servidor backend
+ * cors: Permite peticiones desde el frontend al backend
+ * mysql2: Controlador para interactuar con la base de datos MySQL
+ * nodemailer: Librería para enviar correos electrónicos
+ * google-auth-library: Verifica los tokens de inicio de sesión de Google
+ */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -77,6 +88,14 @@ async function enviarRecibo({ toEmail, nombre, precio, productNombre, fecha }) {
     console.log(`✉️ Recibo Premium enviado a: ${toEmail}`);
 }
 
+/**
+ * ==========================================
+ * CONFIGURACIÓN DE BASE DE DATOS
+ * ==========================================
+ * Usamos createPool en lugar de createConnection porque un "Pool" 
+ * mantiene múltiples conexiones abiertas y las reutiliza, lo cual es
+ * más eficiente y evita caídas del servidor por exceso de tráfico.
+ */
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -88,6 +107,7 @@ const PORT = 5000;
 const app = express();
 const path = require('path');
 
+// Middlewares: cors para aceptar peticiones cruzadas, express.json para parsear el body
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
@@ -103,6 +123,11 @@ app.get('/', (req, res) => {
     res.redirect('/pagina.html');
 });
 
+/**
+ * @route POST /api/register
+ * @desc Registra un nuevo usuario normal (no de Google) en la base de datos.
+ * @body { nombre, correo, contrasena, telefono, profile_pic }
+ */
 app.post('/api/register', async (req, res) => {
     try {
         const { nombre, correo, contrasena, telefono, profile_pic } = req.body;
@@ -115,6 +140,11 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+/**
+ * @route POST /api/login
+ * @desc Inicia sesión verificando si el email y la contraseña coinciden en la base de datos.
+ * @body { correo, contrasena }
+ */
 app.post('/api/login', async (req, res) => {
     const { correo, contrasena } = req.body;
     const [rows] = await connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [correo, contrasena]);
@@ -130,6 +160,11 @@ app.post('/api/login', async (req, res) => {
     res.status(400).json({ success: false, msg: 'User not logged in.' });
 });
 
+/**
+ * @route POST /api/google-login
+ * @desc Inicia sesión usando Google. Valida el token con Google y crea el usuario si no existe.
+ * @body { token } (Token JWT generado por la librería de Google en el Frontend)
+ */
 app.post('/api/google-login', async (req, res) => {
     try {
         const { token } = req.body;
@@ -170,6 +205,11 @@ app.post('/api/google-login', async (req, res) => {
     }
 });
 
+/**
+ * @route PUT /api/users/profile_pic
+ * @desc Actualiza la foto de perfil del usuario.
+ * @body { email, profile_pic }
+ */
 app.put('/api/users/profile_pic', async (req, res) => {
     try {
         const { email, profile_pic } = req.body;
@@ -183,6 +223,12 @@ app.put('/api/users/profile_pic', async (req, res) => {
     }
 });
 
+/**
+ * @route POST /api/products
+ * @desc Agrega un nuevo producto a la tienda. Pasa por un filtro de moderación 
+ *       (blacklist) para evitar contenido inapropiado o categorías no permitidas.
+ * @body { nombre, descripcion, precio, categoria, imagen, user_email }
+ */
 app.post('/api/products', async (req, res) => {
     try {
         const { nombre, descripcion, precio, categoria, imagen, user_email } = req.body;
@@ -230,6 +276,11 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
+/**
+ * @route GET /api/products
+ * @desc Obtiene todos los productos de la base de datos para mostrarlos en el catálogo,
+ *       ordenados del más reciente al más antiguo.
+ */
 app.get('/api/products', async (req, res) => {
     try {
         const [rows] = await connection.query("SELECT * FROM products ORDER BY id DESC");
@@ -240,6 +291,11 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
+/**
+ * @route PUT /api/products/:id
+ * @desc Edita la descripción y precio de un producto existente.
+ *       Contiene lógica de Roles: Solo el dueño o los administradores pueden editarlo.
+ */
 app.put('/api/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -265,6 +321,11 @@ app.put('/api/products/:id', async (req, res) => {
     }
 });
 
+/**
+ * @route DELETE /api/products/:id
+ * @desc Borra un producto de la base de datos.
+ *       Al igual que PUT, valida si eres dueño o administrador.
+ */
 app.delete('/api/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -289,6 +350,13 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
+/**
+ * @route POST /api/orders
+ * @desc Procesa la simulación de pago de una compra. 
+ *       Registra la orden en la BD y desencadena el envío de 2 correos:
+ *       1. Recibo elegante al comprador.
+ *       2. Notificación de venta al dueño del producto.
+ */
 app.post('/api/orders', async (req, res) => {
     try {
         const { user_email, product_id, product_nombre, product_precio, phone } = req.body;
@@ -344,7 +412,13 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
-// Función para avisar al dueño del producto
+/**
+ * ==========================================
+ * MÓDULO DE NOTIFICACIONES (NODE MAILER)
+ * ==========================================
+ * Función secundaria para avisar al dueño del producto que su artículo fue comprado, 
+ * junto con los datos de contacto del comprador.
+ */
 async function notificarVendedor({ vendedorEmail, compradorNombre, compradorEmail, productNombre, precio, fecha }) {
     const currentTransporter = await getTransporter();
 

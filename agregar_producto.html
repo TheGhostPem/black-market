@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <!-- ==========================================
+         BARRA DE NAVEGACIÓN (HEADER)
+         ========================================== -->
     <div class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
         <div class="banner" style="display: flex; align-items: center; gap: 10px;">
             <img class="logo-mini" src="logo_mini.png" alt="no carga" style="max-width: 120px;">
@@ -29,6 +32,9 @@
         Añade nuevos productos a tu catálogo tecnológico 🛒✨
     </p>
 
+    <!-- ==========================================
+         SECCIÓN PRINCIPAL: FORMULARIO DE PRODUCTO
+         ========================================== -->
     <div class="box" style="height: auto; padding-bottom: 2rem; margin-top: 2rem;">
         <div class="login-section">
             <img id="preview-img" src="logo black market.png" alt="no carga"
@@ -61,7 +67,11 @@
     <h2>
         theghost
     </h2>
+    <!-- ==========================================
+         SCRIPTS: VALIDACIÓN DE SESIÓN Y VISTA PREVIA
+         ========================================== -->
     <script>
+        // Si el usuario no ha iniciado sesión, lo redirigimos al login.
         if (!localStorage.getItem('userSession') || localStorage.getItem('userSession') === "undefined") {
             alert('Debes iniciar sesión para añadir un producto.');
             window.location.href = "login.html";

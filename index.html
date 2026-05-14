@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    <!-- ==========================================
+         BARRA DE NAVEGACIÓN (HEADER)
+         ========================================== -->
     <div class="navbar">
         <div class="banner">
             <img class="logo-mini" src="logo_mini.png" alt="no carga">
@@ -28,6 +31,9 @@
         crea una cuenta antes de poder comprar😄🛒
     </p>
 
+    <!-- ==========================================
+         SECCIÓN PRINCIPAL: FORMULARIO DE REGISTRO
+         ========================================== -->
     <div class="box">
         <div class="login-section">
             <img src="logo black market.png" alt="no carga">
@@ -39,6 +45,9 @@
                 <input type="text" placeholder="URL Foto de perfil (opcional)..." name="profile_pic">
                 <button type="submit" style="margin-bottom: 15px;">SIGNUP</button>
 
+                <!-- ==========================================
+                     BOTÓN DE REGISTRO CON GOOGLE (SSO)
+                     ========================================== -->
                 <div
                     style="display: flex; flex-direction: column; align-items: center; gap: 12px; border-top: 1px solid #333; padding-top: 15px;">
                     <p style="color: #888; font-size: 13px; margin: 0;">O regístrate rápido con:</p>
@@ -74,8 +83,16 @@
     </div>
 
     <h2>theghost</h2>
+    <!-- ==========================================
+         SCRIPTS Y LÓGICA DE GOOGLE LOGIN
+         ========================================== -->
     <script src="./script.js"></script>
     <script>
+        /**
+         * handleCredentialResponse: Función llamada automáticamente por Google
+         * cuando el usuario inicia sesión exitosamente en la ventana flotante.
+         * Envía el token al backend para su validación.
+         */
         async function handleCredentialResponse(response) {
             const API_URL = (window.location.protocol === 'file:') ? 'http://localhost:5000' : window.location.origin;
             try {

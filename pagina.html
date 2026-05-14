@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <!-- ==========================================
+         BARRA DE NAVEGACIÓN (HEADER)
+         ========================================== -->
     <div class="navbar">
         <div class="banner">
             <img class="logo-mini" src="logo_mini.png" alt="no carga">
@@ -39,6 +42,9 @@
         </div>
     </div>
     <div class="page">
+        <!-- ==========================================
+             BARRA LATERAL (CATEGORÍAS)
+             ========================================== -->
         <div class="sidebar">
             <button onclick="filtrarPor('Todos')">Todos</button>
             <button onclick="filtrarPor('Teclados')">Teclados</button>
@@ -48,6 +54,9 @@
             <button onclick="filtrarPor('Portatiles')">Portatiles</button>
             <button onclick="filtrarPor('CPU')">CPU</button>
         </div>
+        <!-- ==========================================
+             CONTENEDOR PRINCIPAL (PRODUCTOS Y BANNER)
+             ========================================== -->
         <div class="venta">
             <img class="flores" src="flores.png" alt="no carga">
             <p> Black Marked eleva tu experiencia tecnológica al siguiente nivel.
@@ -55,7 +64,9 @@
                 rendimiento.
                 Si eres estudiante, creador o gamer, aquí encontrarás el equipo perfecto para ti.</p>
 
-            <!-- Contenedor dinámico de productos -->
+            <!-- ==========================================
+                 CATÁLOGO DINÁMICO (Inyectado por script.js)
+                 ========================================== -->
             <div id="catalogo-productos" class="catalogo-grid"></div>
 
         </div>
